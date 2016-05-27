@@ -6,37 +6,48 @@ package Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 
 public class Texture {
 
-    public static Texture wood = new Texture("C:\\Users\\Ryan\\IdeaProjects\\Spirits3D\\src\\res\\wood.png", 64);
-    public static Texture brick = new Texture("C:\\Users\\Ryan\\IdeaProjects\\Spirits3D\\src\\res\\stone.png", 64);
-    public static Texture bluestone = new Texture("C:\\Users\\Ryan\\IdeaProjects\\Spirits3D\\src\\res\\brick.png",64);
-    public static Texture stone = new Texture("C:\\Users\\Ryan\\IdeaProjects\\Spirits3D\\src\\res\\bluestone.png", 64);
-
+    private int x, y;
     public int[] pixels;
     private String loc;
     public final int SIZE;
+    private TextureSheet sheet;
+    private int textureID;
 
 
+    public static Texture stone = new Texture(64, 0, 0, TextureSheet.tiles, 1);
+    public static Texture stone1 = new Texture(64, 0, 0, TextureSheet.tiles, 2);
+    public static Texture stone2 = new Texture(64, 0, 0, TextureSheet.tiles, 3);
+    public static Texture stone3 = new Texture(64, 0, 0, TextureSheet.tiles, 4);
 
-    public Texture(String location, int size) {
-        loc = location;
+    ArrayList<Texture> textureSet;
+    public Texture(){
+
+    }
+    public Texture(int size, int x, int y, TextureSheet sheet, int textureID) {
         SIZE = size;
         pixels = new int[SIZE*SIZE];
+        this.x = x * size;
+        this.y = y * size;
+        //this.textureID = textureID;
+        textureSet.add(this);
         load();
     }
+    public int getTextureID() {
+        return textureID;
+    }
+
     public void load() {
-        try {
-            //BufferedImage image = ImageIO.read(getClass().getResourceAsStream(loc));
-            BufferedImage image = ImageIO.read(new File(loc));
-            int w = image.getWidth();
-            int h = image.getHeight();
-            image.getRGB(0, 0, w, h, pixels, 0, w);
-        } catch(IOException e) {
-            e.printStackTrace();
+        for (int y = 0; y < SIZE; y++) {
+            for (int x = 0; x < SIZE; x++){
+                pixels[x+y*SIZE] = sheet.pixels[(x + this.x) + (y + this.y) * sheet.SIZE];
+            }
         }
     }
+
 }

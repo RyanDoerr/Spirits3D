@@ -16,13 +16,15 @@ import javax.swing.JFrame;
 import Graphics.Texture;
 import Graphics.Screen;
 import Camera.Camera;
+import Graphics.TextureSheet;
 
 public class Game extends JFrame implements Runnable {
     //this is java tradition, unique id's and all that
     private static final long serialVersionUID = 1L;
 
 
-    public ArrayList<Texture> textures;
+    //public ArrayList<Texture> textures;
+    //TextureSheet Texture;
     public int mapWidth = 15;
     public int mapHeight = 15;
     public Camera camera;
@@ -35,6 +37,7 @@ public class Game extends JFrame implements Runnable {
     private boolean running;
     private BufferedImage image;
     public int[] pixels;
+    public ArrayList<Texture> textures;
 
     //0 represents empty space, other numbers represent a wall and it's texture
     public static int[][] map =
@@ -59,19 +62,18 @@ public class Game extends JFrame implements Runnable {
         thread = new Thread(this);
         image = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_RGB);
         pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
-
         //load properties from config/config.properties
+        //textures = new
+        //texture = new Texture();
 
-        textures = new ArrayList<Texture>();
-
-        textures.add(Texture.wood);
-        textures.add(Texture.brick);
-        textures.add(Texture.bluestone);
+        textures.add(Texture.stone);
+        textures.add(Texture.stone);
+        textures.add(Texture.stone);
         textures.add(Texture.stone);
 
         camera = new Camera( 4.5, 4.5, 1, 0, 0, -0.66);
         //System.out.print
-        screen = new Screen(map, mapWidth, mapHeight, textures, screenWidth, screenHeight);
+        screen = new Screen(map, mapWidth, mapHeight, screenWidth, screenHeight, textures);
 
         addKeyListener(camera);
 
